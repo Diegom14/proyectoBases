@@ -10,7 +10,7 @@ cur.execute(sql)
 
 sql = """
 CREATE TABLE personas
-			(id serial PRIMARY KEY, rut int(8),  dv varchar(1), cantidad_choques int(10), edad int(10));	
+			(id serial PRIMARY KEY, rut int(8),  dv varchar(1), cantidad_choques int(10), edad int(10), nombre varchar(10), apellido varchar(10), direccion varchar(40));	
 
 CREATE TABLE vehiculo
 			(id serial PRIMARY KEY, patente varchar(40),  personas_id int(100), modelo varchar(40), marca varchar(20), dueño_id int(10));	
