@@ -15,28 +15,43 @@
             <div class="container-fluid">
               <!-- Project-->
 
-              <form  method="POST" action="/mostrar_personas" enctype="multipart/form-data">
+              <form  method="POST" action="/choques_marca" enctype="multipart/form-data">
+                        
+
+
                         <div class="form-group">
-                          <label class="form-control-label">Rut</label>
-                          <input type="number" name="rut" placeholder="Ingrese su nombre" class="form-control">
+                          <label class="form-control-label">Modelo</label>
+                          <SELECT name = "marca">
+                        <OPTION selected="selected">marca1
+                        <OPTION>marca2
+                        <OPTION>marca3
+                        <OPTION>marca4
+                        </SELECT>
                         </div>
+
                         <div class="form-group">
-                          <label class="form-control-label">Dígito Verificador</label>
-                          <input type="text" name="dv" class="form-control">
+                          <label class="form-control-label">Marca</label>
+                          <SELECT name = "modelo">
+                        <OPTION selected="selected">modelo1
+                        <OPTION>modelo2
+                        <OPTION>modelo3
+                        <OPTION>modelo4
+                        </SELECT>
                         </div>
                         
                         <div class="form-group">       
                         <button class="btn btn-primary">Ingresar datos</button>
                           
                         </div>
+                        <h3 class="h4">{{advertencia}} </h3><small></small>
                       </form>
-              {%for resultado in resultados%} 
+              {%for resultado in cantidad%} 
               <div class="project">
                 <div class="row bg-white has-shadow">
                   <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
                     <div class="project-title d-flex align-items-center">
                       
-                        <h3 class="h4">Cantidad de choques: {{resultado[3]  }} </h3><small></small>
+                        <h3 class="h4">Cantidad de choques: {{resultado[0]  }} </h3><small></small>
                       </div>
                     </div>
                     <div class="project-date"><span class="hidden-sm-down"></span></div>

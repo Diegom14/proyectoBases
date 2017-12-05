@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Personas que han conducido en estado de ebriedad</h2>
+            </div>
+          </header>
+         
+          
+          <!-- Projects Section-->
+          <section class="projects no-padding-top">
+            <div class="container-fluid">
+              <!-- Project-->
+
+              <form  method="POST" action="/mostrar_alcoholemia" enctype="multipart/form-data">
+                        
+                        
+                        <div class="form-group">       
+                        <button class="btn btn-primary">Cosultar</button>
+                          
+                        </div>
+                      </form>
+              {%for ebrio in ebrios%} 
+              
+                    <div class="project-title d-flex align-items-center">
+                      
+                        <h3 class="h4">Rut: {{ebrio[0]}} </h3><small></small>
+                      </div>
+                    
+
+              {%endfor%}
+        
+            </div>
+          </section>
+          <!-- Client Section-->
+         
+          <!-- Feeds Section-->
+          
+</div>
+ {% endblock %}

@@ -27,20 +27,36 @@
                       </div>
                     </div>
                     <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Información sobre el conductor</h3>
+                      <h3 class="h4">Eliminar vehículo</h3>
                     </div>
                     <div class="card-body">
                       
-                      <form  method="POST" action="/datos_vehiculos" enctype="multipart/form-data">
+                      <form  method="POST" action="/eliminar_vehiculo" enctype="multipart/form-data">
+                       
+
                         <div class="form-group">
-                          <label class="form-control-label">Cantidad de alcohol en la sangre</label>
-                          <input type="text" name="alcoholemia" placeholder="Ingrese la cantidad de alcohol en la sangre del conductor" class="form-control">
+                          <label class="form-control-label">Rut Dueño</label>
+                          <input type="number" name="propietario" class="form-control">
+                          <label class="form-control-label">Patente</label>
+                          <input type="text" name="patente" class="form-control">
                         </div>
+                        <div class="project">
+                <div class="row bg-white has-shadow">
+                  <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
+                    <div class="project-title d-flex align-items-center">
+                      
+                        <h3 class="h4">{{advertencia}} </h3><small></small>
+                      </div>
+                    </div>
+                    <div class="project-date"><span class="hidden-sm-down"></span></div>
+                  </div>
+                  
+                </div>
+              </div>
 
                         
 
-                        
-                          
+                        <div class="form-group">       
                           <input type="submit" value="Ingresar datos" class="btn btn-primary">
                         </div>
                       </form>
@@ -56,4 +72,3 @@
           
         </div>
        {% endblock %}
-  

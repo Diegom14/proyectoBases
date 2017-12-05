@@ -27,20 +27,34 @@
                       </div>
                     </div>
                     <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Información sobre el conductor</h3>
+                      <h3 class="h4">Actualizar dirección</h3>
                     </div>
                     <div class="card-body">
                       
-                      <form  method="POST" action="/datos_vehiculos" enctype="multipart/form-data">
+                      <form  method="POST" action="/actualizar_direccion" enctype="multipart/form-data">
+                       
+
                         <div class="form-group">
-                          <label class="form-control-label">Cantidad de alcohol en la sangre</label>
-                          <input type="text" name="alcoholemia" placeholder="Ingrese la cantidad de alcohol en la sangre del conductor" class="form-control">
+                          <label class="form-control-label">Rut</label>
+                          <input type="text" name="rut" class="form-control">
+                          
+                          
+
+                          <label class="form-control-label">Dirección nueva</label>
+                          <input type="text" name="direccionNueva" class="form-control">
+
+                          <label class="form-control-label">Comuna Nueva</label>
+                          <SELECT name = "comuna">
+                        <OPTION selected="selected">comuna1
+                        <OPTION>comuna2
+                        <OPTION>comuna3
+                        <OPTION>comuna4
+                        </SELECT> 
                         </div>
 
                         
 
-                        
-                          
+                        <div class="form-group">       
                           <input type="submit" value="Ingresar datos" class="btn btn-primary">
                         </div>
                       </form>
@@ -56,4 +70,3 @@
           
         </div>
        {% endblock %}
-  

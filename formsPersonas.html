@@ -31,6 +31,7 @@
                     </div>
                     <div class="card-body">
                       
+                      
                       <form  method="POST" action="/datos_personas" enctype="multipart/form-data">
                         <div class="form-group">
                           <label class="form-control-label">Nombre</label>
@@ -40,14 +41,14 @@
 
                         <div class="form-group">
                           <label class="form-control-label">Rut</label>
-                          <input type="text" name="rut" placeholder="Ingrese su rut sin puntos y sin guión" class="form-control">
+                          <input type="number" name="rut" placeholder="Ingrese su rut sin puntos y sin guión" class="form-control">
                           <label class="form-control-label">Dígito verificador</label>
-                          <input type="text" name="dv" placeholder="Ingrese el dígito verificador" class="form-control">
+                          <input type="number" name="dv" placeholder="Ingrese el dígito verificador" class="form-control">
                         </div>
 
                         <div class="form-group">
                           <label class="form-control-label">Edad</label>
-                          <input type="text" name="edad" placeholder="Ingrese su edad" class="form-control">
+                          <input type="number" name="edad" placeholder="Ingrese su edad" class="form-control">
                         </div>
 
                         
@@ -59,7 +60,17 @@
 
                         <div class="form-group">
                           <label class="form-control-label">Cantidad de choques</label>
-                          <input type="text" name="cantidad_choques" placeholder="Ingrese la cantidad de choques de la persona" class="form-control">
+                          <input type="number" name="cantidad_choques" placeholder="Ingrese la cantidad de choques de la persona" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                          <label class="form-control-label">Comuna</label>
+                          <SELECT name = "comuna">
+                        <OPTION selected="selected">comuna1
+                        <OPTION>comuna2
+                        <OPTION>comuna3
+                        <OPTION>comuna4
+                        </SELECT> 
                         </div>
 
                         <div class="form-group">       
