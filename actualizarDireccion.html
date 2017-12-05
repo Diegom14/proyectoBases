@@ -33,10 +33,13 @@
                       
                       <form  method="POST" action="/actualizar_direccion" enctype="multipart/form-data">
                        
-
+                        <h3 class="h4">{{advertencia}} </h3><small></small>
                         <div class="form-group">
                           <label class="form-control-label">Rut</label>
-                          <input type="text" name="rut" class="form-control">
+                          <input type="number" name="rut" class="form-control">
+
+                          <label class="form-control-label">Dígito Verificador</label>
+                          <input type="text" name="dv" class="form-control">
                           
                           
 
