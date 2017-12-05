@@ -32,11 +32,17 @@ def mostrarPersona():
 		sql = "select * from personas where rut = %s and dv = '%s'"%(rut, dv)
 
 		cur.execute(sql)
+
 		conn.commit()
 		resultados = cur.fetchall()
-		return render_template("mostrarPersonas.html",usuario = usuario,resultados=resultados)
-	else :
-		return render_template("mostrarPersonas.html",usuario = usuario,resultados=[])
+		if len(resultados) > 0:
+
+			return render_template("mostrarPersonas.html",usuario = usuario,resultados=resultados)
+		else:
+			 return render_template("mostrarPersonas.html",usuario = usuario, advertencia = "Rut no registrado")
+	
+	
+	return render_template("mostrarPersonas.html",usuario = usuario)
 
 
 #INSERT 
@@ -55,13 +61,22 @@ def formularioPersona():
 		
 		edad = request.form["edad"]
 		direccion = request.form["direccion"]
-		cantidadDeChoques = request.form["cantidad_choques"]
-		comuna = request.form["comuna"]		 
+		cantidadDeChoques = 1
+		comuna = request.form["comuna"]	
 
-		sql = "insert into personas(nombre, rut, dv, cantidad_choques, edad, direccion, comuna) values('%s','%s','%s','%s','%s','%s','%s')"%(nombre, rut, dv, cantidadDeChoques, edad, direccion, comuna)
+		cur.execute("select personas.id from personas where rut = %s and dv ='%s';"%(rut,dv))	 
 
-		cur.execute(sql)
-		conn.commit()
+		test = cur.fetchall()
+
+		if len(test) == 0:
+
+			sql = "insert into personas(nombre, rut, dv, cantidad_choques, edad, direccion, comuna) values('%s','%s','%s','%s','%s','%s','%s')"%(nombre, rut, dv, cantidadDeChoques, edad, direccion, comuna)
+
+			cur.execute(sql)
+			conn.commit()
+			return render_template("formsPersonas.html",usuario = usuario, advertencia = "Persona agregada")
+		else:
+			return render_template("formsPersonas.html",usuario = usuario, advertencia = "El rut ingresado ya se encuentra registrado")
 		
 
 	return render_template("formsPersonas.html",usuario = usuario)
@@ -80,17 +95,21 @@ def formularioVehiculo():
 
 		cur.execute(sql)
 		idPro = cur.fetchall()
-		idProp = idPro[0][0]
+		
 
 		cur.execute("select vehiculo.id from vehiculo where patente = '%s'"%(patente))
 		test = cur.fetchall()
-		if len(test) == 0:
-			cur.execute("insert into vehiculo(patente, modelo, marca, personas_id) values('%s','%s','%s',%s)"%(patente, modelo, marca,idProp))
-			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Vehiculo agregado con exito")
+
+		if len(idPro) > 0:
+			if len(test) == 0:
+				idProp = idPro[0][0]
+				cur.execute("insert into vehiculo(patente, modelo, marca, personas_id) values('%s','%s','%s',%s)"%(patente, modelo, marca,idProp))
+				return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Vehiculo agregado con exito")
 		
+			else:
+				return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Patente ya esta registrada")
 		else:
-			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Patente ya esta registrada")
-		
+			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Rut no registrado")
 		
 		conn.commit()
 	return render_template("formsVehiculos.html",usuario = usuario)
@@ -106,6 +125,7 @@ def informacionChoque():
 		rut = request.form["rut"]
 		
 		dv = request.form["dv"]
+		patente = request.form["patente"]
 		
 		
 		comuna_choque = request.form["comuna_choque"]	 
@@ -200,11 +220,21 @@ def actualizarDireccion():
 
 		direccionNueva = request.form["direccionNueva"]
 		rut = request.form["rut"]
+		dv = request.form["dv"]
 		comuna = request.form["comuna"]
-		sql = "update personas set direccion = '%s' where rut = '%s'"%(direccionNueva, rut)
 
-		cur.execute(sql)
-		conn.commit()
+		cur.execute("select personas.id from personas where rut = %s and dv = '%s'"%(rut, dv))
+		test = cur.fetchall()
+
+		if len(test) > 0:
+
+
+			sql = "update personas set direccion = '%s' where rut = '%s' and dv = '%s'"%(direccionNueva, rut, dv)
+
+			cur.execute(sql)
+			conn.commit()
+		else:
+			return render_template("actualizarDireccion.html",usuario = usuario, advertencia = "Rut no registrado")			
 	return render_template("actualizarDireccion.html",usuario = usuario)
 
 
@@ -258,7 +288,7 @@ def choquesMarca():
 		cur.execute("select vehiculo.id from vehiculo where marca = '%s' and modelo = '%s';"%(marca,modelo))
 		test = cur.fetchall()
 
-		if len(test) == 0:
+		if len(test) > 0:
 			cur.execute("select count(*) from choques, vehiculo where choques.vehiculo_id = vehiculo.id and marca = '%s' and modelo = '%s';"%(marca,modelo))
 			conn.commit()
 			cantidad = cur.fetchall()
