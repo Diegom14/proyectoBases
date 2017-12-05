@@ -29,7 +29,7 @@ def mostrarPersona():
 	if request.method == "POST":
 		rut = request.form["rut"]
 		dv = request.form["dv"]
-		sql = "select * from personas where rut = %s and dv = '%s'"%(rut, dv)
+		sql = "select * from personas where rut = %s and dv = %s"%(rut, dv)
 
 		cur.execute(sql)
 
@@ -39,13 +39,15 @@ def mostrarPersona():
 
 			return render_template("mostrarPersonas.html",usuario = usuario,resultados=resultados)
 		else:
-			 return render_template("mostrarPersonas.html",usuario = usuario, advertencia = "Rut no registrado")
+			return render_template("mostrarPersonas.html",usuario = usuario, advertencia = "Rut no registrado")
 	
 	
 	return render_template("mostrarPersonas.html",usuario = usuario)
 
 
 #INSERT 
+
+#listo
 @app.route('/datos_personas', methods=["POST","GET"])
 def formularioPersona():
 
@@ -60,17 +62,17 @@ def formularioPersona():
 		dv = request.form["dv"]
 		
 		edad = request.form["edad"]
-		direccion = request.form["direccion"]
+		calle = request.form["calle"]
+		numeracion = request.form["numeracion"]
 		cantidadDeChoques = 1
 		comuna = request.form["comuna"]	
 
-		cur.execute("select personas.id from personas where rut = %s and dv ='%s';"%(rut,dv))	 
+		cur.execute("select personas.id from personas where rut = %s and dv =%s"%(rut,dv))	 
 
 		test = cur.fetchall()
 
 		if len(test) == 0:
-
-			sql = "insert into personas(nombre, rut, dv, cantidad_choques, edad, direccion, comuna) values('%s','%s','%s','%s','%s','%s','%s')"%(nombre, rut, dv, cantidadDeChoques, edad, direccion, comuna)
+			sql = "insert into personas(nombre, rut, dv, cantidad_choques, edad, calle, numeracion, comuna) values('%s', %s, %s, '%s', %s,'%s', %s, '%s')"%(nombre, rut, dv, cantidadDeChoques, edad, calle, numeracion, comuna)
 
 			cur.execute(sql)
 			conn.commit()
@@ -89,29 +91,33 @@ def formularioVehiculo():
 		modelo = request.form["modelo"]
 		
 		marca = request.form["marca"]
-		rutProp = request.form["rutProp"]
-		dvProp = request.form["dvProp"]
-		sql = "select id from personas where rut = %s and dv = '%s'"%(rutProp, dvProp)
+		rut = request.form["rut"]
+		dv = request.form["dv"]
+		sql = "select id from personas where rut = %s and dv = %s"%(rut, dv)
 
 		cur.execute(sql)
-		idPro = cur.fetchall()
+		idPersona = cur.fetchall()
+
+		
 		
 
 		cur.execute("select vehiculo.id from vehiculo where patente = '%s'"%(patente))
 		test = cur.fetchall()
 
-		if len(idPro) > 0:
-			if len(test) == 0:
-				idProp = idPro[0][0]
-				cur.execute("insert into vehiculo(patente, modelo, marca, personas_id) values('%s','%s','%s',%s)"%(patente, modelo, marca,idProp))
-				return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Vehiculo agregado con exito")
-		
-			else:
-				return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Patente ya esta registrada")
-		else:
+		if len(idPersona) == 0:
 			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Rut no registrado")
+
+		elif len(test) == 0:
+			idProp = idPersona[0][0]
+			cur.execute("insert into vehiculo(patente, modelo, marca, personas_id) values('%s','%s','%s',%s);"%(patente, modelo, marca,idProp))
+			conn.commit()
+			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Vehiculo agregado con exito")
+			
+		else:
+			
+			return render_template("formsVehiculos.html",usuario = usuario, advertencia = "Patente ya esta registrada")
 		
-		conn.commit()
+		
 	return render_template("formsVehiculos.html",usuario = usuario)
 
 @app.route('/Informacion_choques', methods=["POST","GET"])
@@ -126,27 +132,45 @@ def informacionChoque():
 		
 		dv = request.form["dv"]
 		patente = request.form["patente"]
+
+		cur.execute("select vehiculo.id from vehiculo where patente ='%s'"%(patente))
+		vehicId = cur.fetchall()
+		
 		
 		
 		comuna_choque = request.form["comuna_choque"]	 
-		cur.execute("select personas.id from personas where rut = %s and dv = '%s'"%(rut, dv))
+		cur.execute("select personas.id from personas where rut = %s and dv = %s"%(rut, dv))
 		prueba = cur.fetchall()
 		if len(prueba) == 0:
 			
 			return render_template("informacionChoque.html",usuario = usuario, advertencia = "Persona no registrada")
+		
+		elif len(vehiId) == 0:
+
+			return render_template("informacionChoque.html",usuario = usuario, advertencia = "Vehiculo no registrado")
+
+
 		else:
 
-			cur.execute("update personas set cantidad_choques = cantidad_choques + 1 where rut = %s and dv = '%s'"%(rut, dv))
+			vehiculoId = vehicId[0][0]
+			cur.execute("update personas set cantidad_choques = cantidad_choques + 1 where rut = %s and dv = %s"%(rut, dv))
 			
-			cur.execute("select id from personas where rut = %s and dv = '%s';"%(rut, dv))
+			cur.execute("select id from personas where rut = %s and dv = %s;"%(rut, dv))
 			idPro = cur.fetchall()
 			idProp = idPro[0][0]
-			sql2 = "insert into conductor_choque(personas_id, alcoholemia) values(%s, %s)"%(idProp, alcoholemia)
 
-			cur.execute("insert into choques(personas_id,comuna) values(%s,'%s')"%(idProp, comuna_choque))
-			cur.execute(sql2)
+			cur.execute("insert into choques(personas_id, vehiculo_id, comuna) values(%s, %s,'%s')"%(idProp, vehiculoId, comuna_choque))
+			
 
 			conn.commit()
+
+			cur.execute("select choques.id from choques where personas_id =%s and vehiculo_id = %s"%(idProp,vehiculoId))
+			choquesId = cur.fetchall()
+			choqueId = choquesId[0][0]
+
+			sql2 = "insert into conductor_choque(personas_id, vehiculo_id, choque_id, alcoholemia) values(%s, %s, %s, %s)"%(idProp, vehiculoId, choqueId, alcoholemia)
+
+			cur.execute(sql2)
 
 			return render_template("informacionChoque.html",usuario = usuario, advertencia = "Datos agregados")
 		
@@ -169,12 +193,18 @@ def eliminarVehiculo():
 
 		patente = request.form["patente"]
 		propietario = request.form["propietario"]
+		dv = request.form["dv"]
 		cur.execute("select vehiculo.id from vehiculo where patente = '%s'"%(patente))
 		test = cur.fetchall()
+		cur.execute("select personas.id from personas where rut =%s and dv =%s"%(propietario,dv))
+		test2 = cur.fetchall()
 		if len(test) == 0:
 			return render_template("eliminarVehiculo.html",usuario = usuario, advertencia = "Patente no se encuentra registrada")
+		elif len(test2) ==0:
+			return render_template("eliminarVehiculo.html",usuario = usuario, advertencia = "Rut no se encuentra registrado")
+
 		else:
-			sql = "delete from vehiculo where vehiculo.personas_id in (select personas.id from personas where personas.rut = %s) and vehiculo.patente = '%s'"%(propietario, patente)
+			sql = "delete from vehiculo where vehiculo.personas_id in (select personas.id from personas where personas.rut = %s and personas.dv = %s) and vehiculo.patente = '%s'"%(propietario, dv, patente)
 			cur.execute(sql)
 			conn.commit()
 			return render_template("eliminarVehiculo.html",usuario = usuario, advertencia = "Vehiculo eliminado")
@@ -189,10 +219,10 @@ def eliminarPersona():
 
 		rut = request.form["rut"]
 		dv = request.form["dv"]
-		cur.execute("select vehiculo.id from personas, vehiculo where personas.id = vehiculo.personas_id and rut = %s and dv = '%s';"%(rut, dv))
+		cur.execute("select vehiculo.id from personas, vehiculo where personas.id = vehiculo.personas_id and rut = %s and dv = %s;"%(rut, dv))
 
 		test = cur.fetchall()
-		cur.execute("select personas.id from personas where rut = %s and dv = '%s'"%(rut, dv))
+		cur.execute("select personas.id from personas where rut = %s and dv = %s"%(rut, dv))
 		test2 = cur.fetchall()
 
 
@@ -202,7 +232,7 @@ def eliminarPersona():
 		
 
 		if len(test) ==0:
-			sql = "delete from personas where personas.rut = %s and dv = '%s';"%(rut, dv)
+			sql = "delete from personas where personas.rut = %s and dv = %s;"%(rut, dv)
 			cur.execute(sql)
 			conn.commit()
 			return render_template("eliminarPersona.html",usuario = usuario, advertencia = "Persona eliminada")
@@ -218,7 +248,8 @@ def eliminarPersona():
 def actualizarDireccion():
 	if request.method == "POST":
 
-		direccionNueva = request.form["direccionNueva"]
+		calle = request.form["calle"]
+		numeracion = request.form["numeracion"]
 		rut = request.form["rut"]
 		dv = request.form["dv"]
 		comuna = request.form["comuna"]
@@ -229,7 +260,7 @@ def actualizarDireccion():
 		if len(test) > 0:
 
 
-			sql = "update personas set direccion = '%s' where rut = '%s' and dv = '%s'"%(direccionNueva, rut, dv)
+			sql = "update personas set calle = '%s', numeracion = %s where rut = %s and dv = %s"%(calle, numeracion, rut, dv)
 
 			cur.execute(sql)
 			conn.commit()
