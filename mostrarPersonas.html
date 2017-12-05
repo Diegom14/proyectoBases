@@ -5,7 +5,7 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Dashboard</h2>
+              <h2 class="no-margin-bottom">Cantidad de Choques</h2>
             </div>
           </header>
          
@@ -16,20 +16,22 @@
               <!-- Project-->
 
               <form  method="POST" action="/mostrar_personas" enctype="multipart/form-data">
+
+                <h3 class="h4"> <p style="color:red;">{{advertencia}} </p></h3><small></small>
                         <div class="form-group">
                           <label class="form-control-label">Rut</label>
-                          <input type="number" name="rut" placeholder="Ingrese su rut" class="form-control">
+                          <input type="number" min="4000000" max="40000000" step="1" name="rut" placeholder="Ingrese su rut" class="form-control">
                         </div>
                         <div class="form-group">
                           <label class="form-control-label">Dígito Verificador</label>
-                          <input type="text" name="dv" class="form-control">
+                          <input type="number" min="1" max="9" step="1" name="dv" placeholder="Si termina en k, reemplácelo por un 1" class="form-control">
                         </div>
                         
                         <div class="form-group">       
                         <button class="btn btn-primary">Ingresar datos</button>
                           
                         </div>
-                        <h3 class="h4">{{advertencia  }} </h3><small></small>
+                        
                       </form>
               {%for resultado in resultados%} 
               <div class="project">

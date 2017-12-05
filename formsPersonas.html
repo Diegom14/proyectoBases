@@ -31,30 +31,39 @@
                     </div>
                     <div class="card-body">
                       
-                      <h3 class="h4">{{advertencia}} </h3><small></small>
+                      <h3 class="h4"> <p style="color:red;">{{advertencia}} </p></h3><small></small>
                       <form  method="POST" action="/datos_personas" enctype="multipart/form-data">
                         <div class="form-group">
                           <label class="form-control-label">Nombre</label>
-                          <input type="text" name="nombre" placeholder="Ingrese su nombre" class="form-control">
+                          <input type="text" name="nombre" placeholder="Ingrese su nombre" class="form-control" required/>>
 
                         </div>
 
                         <div class="form-group">
+                          
                           <label class="form-control-label">Rut</label>
-                          <input type="number" name="rut" placeholder="Ingrese su rut sin puntos y sin guión" class="form-control">
+                          <input type="number" min="4000000" max="40000000" step="1" name="rut" placeholder="Ingrese su rut sin puntos y sin guión" class="form-control" required/>>
+                          
                           <label class="form-control-label">Dígito verificador</label>
-                          <input type="number" name="dv" placeholder="Ingrese el dígito verificador" class="form-control">
+                          <input type="number" min="1" max="9" step="1" name="dv" placeholder="Si termina en k, reemplácelo por un 1" class="form-control" required/>>
+
+                          
                         </div>
 
                         <div class="form-group">
                           <label class="form-control-label">Edad</label>
-                          <input type="number" name="edad" placeholder="Ingrese su edad" class="form-control">
+                          <input type="number" min="15" max="100" step="1" name="edad" placeholder="Ingrese su edad" class="form-control" required/>>
                         </div>
 
                         
                         <div class="form-group">       
                           <label class="form-control-label">Dirección</label>
-                          <input type="text" name="direccion" placeholder="Ingrese la dirección de residencia" class="form-control">
+                          <input type="text" name="calle" placeholder="Ingrese la calle" class="form-control" required/>>
+                        </div>
+
+                        <div class="form-group">       
+                          <label class="form-control-label">Numeración</label>
+                          <input type="number" min ="0" step="1" name="numeracion" placeholder="Ingrese la Numeración" class="form-control" required/>>
                         </div>
 
 

@@ -32,11 +32,15 @@
                     <div class="card-body">
                       
                       <form  method="POST" action="/eliminar_vehiculo" enctype="multipart/form-data">
-                       
+                       <h3 class="h4"> <p style="color:red;">{{advertencia}} </p></h3><small></small>
 
                         <div class="form-group">
                           <label class="form-control-label">Rut Dueño</label>
-                          <input type="number" name="propietario" class="form-control">
+                          <input type="number" min="4000000" max="40000000" step="1" name="propietario" class="form-control">
+                         
+                          <label class="form-control-label">Dígito verificador</label>
+                          <input type="number" min="1" max="9" step="1" name="dv" placeholder="Si termina en k, reemplácelo por un 1" class="form-control">
+                         
                           <label class="form-control-label">Patente</label>
                           <input type="text" name="patente" class="form-control">
                         </div>
@@ -45,7 +49,7 @@
                   <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
                     <div class="project-title d-flex align-items-center">
                       
-                        <h3 class="h4">{{advertencia}} </h3><small></small>
+                       
                       </div>
                     </div>
                     <div class="project-date"><span class="hidden-sm-down"></span></div>

@@ -33,18 +33,21 @@
                       
                       <form  method="POST" action="/actualizar_direccion" enctype="multipart/form-data">
                        
-                        <h3 class="h4">{{advertencia}} </h3><small></small>
+                        <h3 class="h4"> <p style="color:red;">{{advertencia}} </p></h3><small></small>
                         <div class="form-group">
                           <label class="form-control-label">Rut</label>
-                          <input type="number" name="rut" class="form-control">
+                          <input type="number" min="4000000" max="40000000" step="1" name="rut" class="form-control" required/>>
 
                           <label class="form-control-label">Dígito Verificador</label>
-                          <input type="text" name="dv" class="form-control">
+                          <input type="number" min="1" max="9" step="1" name="dv" placeholder="Si termina en k, reemplácelo por un 1" class="form-control" required/>>
                           
                           
 
                           <label class="form-control-label">Dirección nueva</label>
-                          <input type="text" name="direccionNueva" class="form-control">
+                          <input type="text" name="calle" placeholder="Ingrese la calle" class="form-control" required/>>
+
+                          <label class="form-control-label">Numeración</label>
+                          <input type="number" min="1" step="1" name="numeracion" placeholder="Ingrese la Numeración" class="form-control" required/>>
 
                           <label class="form-control-label">Comuna Nueva</label>
                           <SELECT name = "comuna">

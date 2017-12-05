@@ -32,20 +32,20 @@
                     <div class="card-body">
                       
                       <form  method="POST" action="/eliminar_persona" enctype="multipart/form-data">
-                       
+                       <h3 class="h4"> <p style="color:red;">{{advertencia}} </p></h3><small></small>
 
                         <div class="form-group">
                           <label class="form-control-label">Rut</label>
-                          <input type="number" name="rut" class="form-control">
+                          <input type="number" min="4000000" max="40000000" step="1" name="rut" class="form-control">
                           <label class="form-control-label">Dígito Verificador</label>
-                          <input type="text" name="dv" class="form-control">
+                          <input type="number" min="1" max="9" step="1" name="dv" placeholder="Si termina en k, reemplácelo por un 1" class="form-control">
                         </div>
                         <div class="project">
                 <div class="row bg-white has-shadow">
                   <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
                     <div class="project-title d-flex align-items-center">
                       
-                        <h3 class="h4">{{advertencia}} </h3><small></small>
+                        
                       </div>
                     </div>
                     <div class="project-date"><span class="hidden-sm-down"></span></div>
